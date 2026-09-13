@@ -5,7 +5,9 @@ This module is still in development, so please report any bugs in the issues sec
 ## How to Download
 
 ### EASY METHOD:
-I haven't published my module on the ChatTriggers website yet, but I will do so very soon. Only then will this method of download be viable.
+1. Download the ChatTriggers mod [here](https://chattriggers.com/)
+2. Run the command `/ct import HousingQOL` in game.<br>
+**The release on ChatTriggers may not always be updated, but the auto updater should ensure that you are always running on the latest version. Check for updates by running `/hqolupdate` in chat.**
 ### MANUAL METHOD:
 1. Download the ChatTriggers mod [here](https://chattriggers.com/)
 2. Install the module by clicking the green '<> Code' button, then clicking 'Download ZIP'
@@ -44,6 +46,9 @@ I haven't published my module on the ChatTriggers website yet, but I will do so 
 - Hide Players [/hideplayers, /hp]
   - /hp &lt;player1&gt; &lt;player2&gt; ...
   - /hp &lt;clear/all/list&gt;
+- Automatic Updater
+- NBT Logger (WIP)
+  - Custom check frequency
 - Coming soon...
 
 ## How to Configure and Use

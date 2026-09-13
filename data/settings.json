@@ -72,6 +72,16 @@
                 "type": 6,
                 "name": "soundLoggerShowPosition",
                 "value": false
+            },
+            {
+                "type": 6,
+                "name": "nbtLogger",
+                "value": false
+            },
+            {
+                "type": 4,
+                "name": "nbtCheckFrequency",
+                "value": "1"
             }
         ]
     },
@@ -232,7 +242,7 @@
             {
                 "type": 6,
                 "name": "autoCollect",
-                "value": false
+                "value": true
             }
         ]
     }

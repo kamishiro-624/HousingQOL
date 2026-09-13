@@ -419,6 +419,26 @@ mainConfig.addSwitch({
   value: false
 });
 
+mainConfig.addSwitch({
+  configName: "nbtLogger",
+  title: "NBT Logger",
+  description: "Logs held items' NBT in chat.",
+  category: "General",
+  value: false
+});
+
+mainConfig.addTextInput({
+  configName: "nbtCheckFrequency",
+  title: "Check Frequency",
+  description: "How many times to check for NBT per second, default is 1. Do not make this too high or you may crash.",
+  category: "General",
+  value: "",
+  placeHolder: "1",
+
+  shouldShow(data) {
+    return data.nbtLogger
+  }
+});
 
 const settings = new Settings("HousingQOL", mainConfig, "data/ColorScheme.json");
 
