@@ -4,7 +4,7 @@ This module is still in development, so please report any bugs in the issues sec
 
 ## How to Download
 
-### EASY METHOD:
+### EASY METHOD: VERIFICATION PENDING; THIS WILL NOT WORK YET
 1. Download the ChatTriggers mod [here](https://chattriggers.com/)
 2. Run the command `/ct import HousingQOL` in game.<br>
 **The release on ChatTriggers may not always be updated, but the auto updater should ensure that you are always running on the latest version. Check for updates by running `/hqolupdate` in chat.**
