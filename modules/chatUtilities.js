@@ -144,7 +144,7 @@ function copyMessage(chatMessage) {
         finalMessage = cleanMessage;
     }
 
-    return new TextComponent("&e[C]").setClick("run_command", "/hIcMS " + finalMessage).setHover("show_text", "Click to copy message to clipboard");
+    return new TextComponent("&e[C]").setClick("run_command", "/hIcMs " + finalMessage).setHover("show_text", "Click to copy message to clipboard");
 }
 
 function hmutePlayer(chatMessage) {
