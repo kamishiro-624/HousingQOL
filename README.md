@@ -50,6 +50,8 @@ This module is still in development, so please report any bugs in the issues sec
 - NBT Logger
   - Custom check frequency
   - Hide/Show Vanilla Items
+  - ignore self-logging
+  - Ignore specific players
 - Coming soon...
 
 ## How to Configure and Use

@@ -8,14 +8,19 @@ const C10PacketCreativeInventoryAction = Java.type("net.minecraft.network.play.c
 const detectedItems = new Map();
 let nextCheckTime = 0;
 
+// TODO: Hide self NBT tagging < nbtHideSelf >
+// Hide other player's logs < nbtIgnoreList >
+
 register("command", (...textSplit) => {
     const text = textSplit.join(" ");
     console.log("&aCopied message to clipboard: " + text);
     copyText(text);
 }).setName("hIcM");
 
-function sendNBT(playerName, itemName, itemNBT, heldItem) { // send the NBT data in chat
+function sendNBT(playerInstance, playerName, itemName, itemNBT, heldItem) { // send the NBT data in chat
     
+    let ignoredPlayers = settings.settings.nbtIgnoreList.split(", ").map((player) => player.trim().toLowerCase());
+
     const options = new Message();
     const copyNBT = new TextComponent("&e[Copy NBT]").setClick("run_command", "/hIcM " + itemNBT).setHover("show_text", "&eClick to copy item NBT!");
     const encodedNBT = encodeURIComponent(itemNBT);
@@ -31,7 +36,34 @@ function sendNBT(playerName, itemName, itemNBT, heldItem) { // send the NBT data
         }
     }
 
+    if (settings.settings.nbtHideSelf) {
+        if (Player.getName() === playerName) {
+            // console.log("Hid self-log!");
+            return;
+        }
+    }
+
+    if (settings.settings.nbtIgnoreList) {
+        // ChatLib.chat(ignoredPlayers.join(", "));
+        if (ignoredPlayers.includes(playerName)) {
+            // console.log("Hid log from ignored player!");
+            return;
+        }
+    }
+
+    if (settings.settings.chatUtilities && settings.settings.chatUtilCopyMsg) {
+        const msg = "&6&l[Housing QOL] &e" + playerName + " &6is holding [&e" + itemName + "&6]!"
+        const cleanmsg = "[Housing QOL] " + playerName + " is holding [" + itemName + "]!"
+
+        const initial = new TextComponent(msg);
+        const copyTag = new TextComponent("&e[C]").setClick("run_command", "/hIcM " + cleanmsg).setHover("show_text", "&eClick to copy message to clipboard");
+        const messageWithCopyTag = new Message(initial, " ", copyTag); // didnt know you could do it like this lol
+
+        ChatLib.chat(messageWithCopyTag);
+    } else {
     ChatLib.chat("&6&l[Housing QOL] &e" + playerName + " &6is holding [&e" + itemName + "&6]!");
+    }
+
     options.addTextComponent(copyNBT)
         .addTextComponent(" ")
         .addTextComponent(giveItem);
@@ -87,6 +119,8 @@ function getNBT() {
         const playeruuid = player.getUUID().toString();
         const itemNBT = heldItem ? heldItem.getNBT().toString() : "null";
 
+        const playerInstance = player;
+
         // console.log(playerName + " is holding [" + itemName + "]!");
         // console.log("Item NBT: " + itemNBT);
         // ChatLib.chat("Dumped held item NBT data to console!");
@@ -99,13 +133,13 @@ function getNBT() {
         if (savedItemNBT === undefined) { // no item stored in map
             detectedItems.set(playeruuid, itemNBT);
             // ChatLib.chat("Stored initial data in Map!");
-            if (itemName !== "Empty Hand") sendNBT(playerName, itemName, itemNBT, heldItem);
+            if (itemName !== "Empty Hand") sendNBT(playerInstance, playerName, itemName, itemNBT, heldItem);
             return;
         }
         // item must be new
         detectedItems.set(playeruuid, itemNBT);
         // ChatLib.chat("Stored new data in Map!");
-        if (itemName !== "Empty Hand") sendNBT(playerName, itemName, itemNBT, heldItem);
+        if (itemName !== "Empty Hand") sendNBT(playerInstance, playerName, itemName, itemNBT, heldItem);
         return;
     });
 

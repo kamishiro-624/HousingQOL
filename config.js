@@ -433,7 +433,7 @@ mainConfig.addTextInput({
   placeHolder: "10",
 
   shouldShow(data) {
-    return data.nbtLogger
+    return data.nbtLogger;
   }
 });
 
@@ -442,8 +442,38 @@ mainConfig.addSwitch({
   title: "Log All Items",
   description: "Logs all items in chat, including vanilla items with no custom NBT changes.",
   category: "General",
-  value: false
+  value: false,
+
+  shouldShow(data) {
+    return data.nbtLogger;
+  }
 });
+
+mainConfig.addSwitch({
+  configName: "nbtHideSelf",
+  title: "Hide Self Logs",
+  description: "Ignores logs from yourself.",
+  category: "General",
+  value: false,
+
+  shouldShow(data) {
+    return data.nbtLogger;
+  }
+});
+
+mainConfig.addTextInput({
+  configName: "nbtIgnoreList",
+  title: "Ignored Players",
+  description: "Players in this list will not have their held items' NBT data logged in chat. Seperate by commas.",
+  category: "General",
+  value: "",
+  placeHolder: "<player1>, <player2>",
+
+  shouldShow(data) {
+    return data.nbtLogger;
+  }
+});
+
 
 const settings = new Settings("HousingQOL", mainConfig, "data/ColorScheme.json");
 
