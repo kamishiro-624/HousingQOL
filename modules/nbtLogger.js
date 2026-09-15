@@ -1,12 +1,77 @@
+// I couldn't find any good documentation or examples for the CT player object so theres a LOT of commented debug code 
 import settings from "../config";
+import { nbtToItem } from "../util/creativeUtils";
+import { copyText } from "../util/chatUtils";
+
+const C10PacketCreativeInventoryAction = Java.type("net.minecraft.network.play.client.C10PacketCreativeInventoryAction");
 
 const detectedItems = new Map();
 let nextCheckTime = 0;
 
+register("command", (...textSplit) => {
+    const text = textSplit.join(" ");
+    console.log("&aCopied message to clipboard: " + text);
+    copyText(text);
+}).setName("hIcM");
+
+function sendNBT(playerName, itemName, itemNBT, heldItem) { // send the NBT data in chat
+    
+    const options = new Message();
+    const copyNBT = new TextComponent("&e[Copy NBT]").setClick("run_command", "/hIcM " + itemNBT).setHover("show_text", "&eClick to copy item NBT!");
+    const encodedNBT = encodeURIComponent(itemNBT);
+    const giveItem = new TextComponent("&d[Give Item]").setClick("run_command", "/internal-hqol_giveItem " + encodedNBT + " " + itemName).setHover("show_text", "&eClick to give item in inventory!");
+    
+    const itemStack = heldItem.getItemStack();
+    const itemTags = itemStack.func_77978_p(); // ItemStack.getTagCompound()
+
+    if (itemTags == null) {
+        if (!settings.settings.nbtAllItems) {
+            // console.log("Vanilla item was not logged: " + itemName);
+            return;
+        }
+    }
+
+    ChatLib.chat("&6&l[Housing QOL] &e" + playerName + " &6is holding [&e" + itemName + "&6]!");
+    options.addTextComponent(copyNBT)
+        .addTextComponent(" ")
+        .addTextComponent(giveItem);
+    ChatLib.chat(options);
+}
+
+register("command", (nbtString, ...itemNameSplit) => {
+    if (!Player.asPlayerMP().player.field_71075_bZ.field_75098_d) { // stupid obfuscation
+        ChatLib.chat("&6&l[Housing QOL] &cYou must be in creative mode to recieve this item!");
+        return;
+    }
+
+    const giveItem = nbtToItem(decodeURIComponent(nbtString));
+    let targetInventoryIndex;
+    const inventory = Player.asPlayerMP().player.field_71071_by;
+
+    const itemName = itemNameSplit.join(" ");
+
+    for (let i = 0; i < 9; i++) {
+        if (inventory.field_70462_a[i] == null) { // first available slot
+            targetInventoryIndex = i;
+            break;
+        }
+    }
+
+    if (targetInventoryIndex !== undefined) {
+        let slotId = targetInventoryIndex + 36; // correction factor
+        Client.sendPacket(new C10PacketCreativeInventoryAction(slotId, giveItem.getItemStack()));
+        ChatLib.chat("&6&l[Housing QOL] &r&6You have been given [&e" + itemName + "&6]!");
+    } else {
+        ChatLib.chat("&6&l[Housing QOL] &r&cPlease free up a space in your hotbar to recieve the item!");
+    }
+}).setName("internal-hqol_giveItem");
+
+
+
 function getNBT() {
     if (!settings.settings.nbtLogger) return;
 
-    const frequency = Math.max(1, Number(settings.settings.nbtCheckFrequency) || 1); // fallback to 1
+    const frequency = Math.max(1, Number(settings.settings.nbtCheckFrequency) || 10); // fallback to 10
     const currentTime = Date.now();
     if (currentTime < nextCheckTime) return;
     nextCheckTime = currentTime + (1000 / frequency); // idk why i had to do this but the function step time wouldnt change soo
@@ -17,7 +82,7 @@ function getNBT() {
 
     playerArray.forEach(player => {
         const heldItem = player.getItemInSlot(0);
-        const itemName = heldItem ? heldItem.getName().removeFormatting() : "Empty Hand";
+        const itemName = heldItem ? heldItem.getName().removeFormatting() : "Empty Hand"; // cool if else ? : thing 
         const playerName = player.getName();
         const playeruuid = player.getUUID().toString();
         const itemNBT = heldItem ? heldItem.getNBT().toString() : "null";
@@ -34,13 +99,13 @@ function getNBT() {
         if (savedItemNBT === undefined) { // no item stored in map
             detectedItems.set(playeruuid, itemNBT);
             // ChatLib.chat("Stored initial data in Map!");
-            if (itemName !== "Empty Hand") ChatLib.chat("&6&l[Housing QOL] &e" + playerName + " &6is holding [&e" + itemName + "&6]!");
+            if (itemName !== "Empty Hand") sendNBT(playerName, itemName, itemNBT, heldItem);
             return;
         }
         // item must be new
         detectedItems.set(playeruuid, itemNBT);
         // ChatLib.chat("Stored new data in Map!");
-        if (itemName !== "Empty Hand") ChatLib.chat("&6&l[Housing QOL] &e" + playerName + " &6is holding [&e" + itemName + "&6]!");
+        if (itemName !== "Empty Hand") sendNBT(playerName, itemName, itemNBT, heldItem);
         return;
     });
 

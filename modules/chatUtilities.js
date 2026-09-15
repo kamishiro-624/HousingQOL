@@ -9,7 +9,7 @@ register("command", (...textSplit) => {
     console.log("&aCopied message to clipboard: " + text);
     copyText(text);
     // all this just to copy a msg :/
-}).setName("hIcM");
+}).setName("hIcMs");
 
 function addTags(event) {
     if (!settings.settings.chatUtilities) return;
@@ -144,7 +144,7 @@ function copyMessage(chatMessage) {
         finalMessage = cleanMessage;
     }
 
-    return new TextComponent("&e[C]").setClick("run_command", "/hIcM " + finalMessage).setHover("show_text", "Click to copy message to clipboard");
+    return new TextComponent("&e[C]").setClick("run_command", "/hIcMS " + finalMessage).setHover("show_text", "Click to copy message to clipboard");
 }
 
 function hmutePlayer(chatMessage) {

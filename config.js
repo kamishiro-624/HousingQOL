@@ -177,7 +177,6 @@ mainConfig.addSwitch({
   title: "Sound Logger",
   description: "Logs sounds played in the game to chat. (Ignores footsteps, digging, and GUI sounds by default.)",
   category: "General",
-  subcategory: "Sound Logger",
   value: false
 });
 
@@ -186,7 +185,6 @@ mainConfig.addSwitch({
   title: "Include All Sounds",
   description: "Includes ALL sounds in the chat log. (SPAM!)",
   category: "General",
-  subcategory: "Sound Logger",
   value: false,
 
   shouldShow(data) {
@@ -199,7 +197,6 @@ mainConfig.addSwitch({
   title: "Show Position",
   description: "Displays the position of each logged sound.",
   category: "General",
-  subcategory: "Sound Logger",
   value: false,
 
   shouldShow(data) {
@@ -430,14 +427,22 @@ mainConfig.addSwitch({
 mainConfig.addTextInput({
   configName: "nbtCheckFrequency",
   title: "Check Frequency",
-  description: "How many times to check for NBT per second, default is 1. Do not make this too high or you may crash.",
+  description: "How many times to check for NBT per second, default is 10. Do not make this too high or you may crash.",
   category: "General",
   value: "",
-  placeHolder: "1",
+  placeHolder: "10",
 
   shouldShow(data) {
     return data.nbtLogger
   }
+});
+
+mainConfig.addSwitch({
+  configName: "nbtAllItems",
+  title: "Log All Items",
+  description: "Logs all items in chat, including vanilla items with no custom NBT changes.",
+  category: "General",
+  value: false
 });
 
 const settings = new Settings("HousingQOL", mainConfig, "data/ColorScheme.json");

@@ -47,8 +47,9 @@ This module is still in development, so please report any bugs in the issues sec
   - /hp &lt;player1&gt; &lt;player2&gt; ...
   - /hp &lt;clear/all/list&gt;
 - Automatic Updater
-- NBT Logger (WIP)
+- NBT Logger
   - Custom check frequency
+  - Hide/Show Vanilla Items
 - Coming soon...
 
 ## How to Configure and Use
