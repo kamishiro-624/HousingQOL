@@ -12,7 +12,16 @@ let nextCheckTime = 0;
 // Hide other player's logs < nbtIgnoreList >
 
 register("command", (...textSplit) => {
-    const text = textSplit.join(" ").replace(/\u00A7/g, "&");
+    //const text = textSplit.join(" ").replace(/\u00A7/g, "&");
+
+    let text;
+    
+    if (settings.settings.actFix) {
+        text = textSplit.join(" ").replace(/\u00A7/g, "&");
+    } else {
+        text = textSplit.join(" ");
+    }
+
     console.log("&aCopied message to clipboard: " + text);
     copyText(text);
 }).setName("hIcM");
