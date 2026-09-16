@@ -474,6 +474,18 @@ mainConfig.addTextInput({
   }
 });
 
+mainConfig.addSwitch({
+  configName: "actFix",
+  title: "ACT Compatibility Fix",
+  description: "Fixes the returned NBT data to be compatible with ACT. Don't worry about this if you don't know what that means.",
+  category: "General",
+  value: false,
+
+  shouldShow(data) {
+    return data.nbtLogger;
+  }
+});
+
 
 const settings = new Settings("HousingQOL", mainConfig, "data/ColorScheme.json");
 

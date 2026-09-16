@@ -49,8 +49,9 @@ This module is still in development, so please report any bugs in the issues sec
 - Automatic Updater
 - NBT Logger
   - Custom check frequency
+  - Copy NBT / Give Item (Requires Creative Mode)
   - Hide/Show Vanilla Items
-  - ignore self-logging
+  - Ignore self-logging
   - Ignore specific players
 - Coming soon...
 
