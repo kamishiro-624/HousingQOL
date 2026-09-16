@@ -15,7 +15,7 @@ register("command", (...textSplit) => {
     //const text = textSplit.join(" ").replace(/\u00A7/g, "&");
 
     let text;
-    
+
     if (settings.settings.actFix) {
         text = textSplit.join(" ").replace(/\u00A7/g, "&");
     } else {
@@ -62,7 +62,7 @@ function sendNBT(playerInstance, playerName, itemName, itemNBTRaw, heldItem) { /
 
     if (settings.settings.nbtIgnoreList) {
         // ChatLib.chat(ignoredPlayers.join(", "));
-        if (ignoredPlayers.includes(playerName)) {
+        if (ignoredPlayers.includes(playerName.toLowerCase())) {
             // console.log("Hid log from ignored player!");
             return;
         }
