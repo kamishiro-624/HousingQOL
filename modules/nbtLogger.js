@@ -2,6 +2,7 @@
 import settings from "../config";
 import { nbtToItem } from "../util/creativeUtils";
 import { copyText } from "../util/chatUtils";
+import { defaultIgnore } from "../util/nbtDefIgnore";
 
 const C10PacketCreativeInventoryAction = Java.type("net.minecraft.network.play.client.C10PacketCreativeInventoryAction");
 
@@ -13,7 +14,7 @@ let nextCheckTime = 0;
 
 register("command", (...textSplit) => {
     //const text = textSplit.join(" ").replace(/\u00A7/g, "&");
-
+/*
     let text;
 
     if (settings.settings.actFix) {
@@ -21,6 +22,9 @@ register("command", (...textSplit) => {
     } else {
         text = textSplit.join(" ");
     }
+*/
+
+    const text = settings.settings.actFix ? textSplit.join(" ").replace(/\u00A7/g, "&") : textSplit.join(" ");
 
     console.log("&aCopied message to clipboard: " + text);
     copyText(text);
@@ -37,6 +41,7 @@ function sendNBT(playerInstance, playerName, itemName, itemNBTRaw, heldItem) { /
     }
 
     let ignoredPlayers = settings.settings.nbtIgnoreList.split(", ").map((player) => player.trim().toLowerCase());
+    let ignoredItems = settings.settings.nbtNameIgnoreList.split(", ").map((item) => item.trim().toLowerCase());
 
     const options = new Message();
     const copyNBT = new TextComponent("&e[Copy NBT]").setClick("run_command", "/hIcM " + itemNBT).setHover("show_text", "&eClick to copy item NBT!");
@@ -45,6 +50,7 @@ function sendNBT(playerInstance, playerName, itemName, itemNBTRaw, heldItem) { /
     
     const itemStack = heldItem.getItemStack();
     const itemTags = itemStack.func_77978_p(); // ItemStack.getTagCompound()
+    // func_150295_c("ench", 10);
 
     if (itemTags == null) {
         if (!settings.settings.nbtAllItems) {
@@ -67,6 +73,27 @@ function sendNBT(playerInstance, playerName, itemName, itemNBTRaw, heldItem) { /
             return;
         }
     }
+
+
+    if (settings.settings.nbtNameIgnoreList) { // ignoredItems is the array from config
+
+        if (ignoredItems.includes("//hqol_default//")) {
+            // ChatLib.chat("default ignore enabled");
+            // ChatLib.chat("DEF: " + defaultIgnore.join(", "));
+
+            if (defaultIgnore.some(ignore => ignore.toLowerCase() === itemName.toLowerCase())) {
+                // ChatLib.chat("Ignored default item!");
+                return;
+            }
+        }
+
+        if (ignoredItems.includes(itemName.toLowerCase())) {
+            // console.log("Hid log of ignored item!");
+            return;
+        }
+    }
+
+    
 
     if (settings.settings.chatUtilities && settings.settings.chatUtilCopyMsg) {
         const msg = "&6&l[Housing QOL] &e" + playerName + " &6is holding [&e" + itemName + "&6]!"
@@ -134,7 +161,7 @@ function actFixNBT(itemNBT) { // this function is so scuffed wtf
 
                     itemNBTFix = left + inside + right;
                     // itemNBTFix = itemNBTFix.replaceAll("§", "&"); this is useless because ct is converting it back holy ragebait
-                    console.log("ItemNBT Fixed: " + itemNBTFix);
+                    // console.log("ItemNBT Fixed: " + itemNBTFix);
                 }
             }
         }

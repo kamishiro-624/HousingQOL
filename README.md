@@ -52,7 +52,10 @@ This module is still in development, so please report any bugs in the issues sec
   - Copy NBT / Give Item (Requires Creative Mode)
   - Hide/Show Vanilla Items
   - Ignore self-logging
-  - Ignore specific players
+  - Ignore specific players / items
+  - ACT Compatibility Fix
+- Bot Join Hider
+  - WIP and very bad
 - Coming soon...
 
 ## How to Configure and Use

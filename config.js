@@ -474,6 +474,19 @@ mainConfig.addTextInput({
   }
 });
 
+mainConfig.addTextInput({
+  configName: "nbtNameIgnoreList",
+  title: "Ignored Items",
+  description: "Items in this list will not have their NBT data logged in chat. Provide the item name, seperated by commas. (//HQOL_DEFAULT//)",
+  category: "General",
+  value: "",
+  placeHolder: "<item1>, <item2>",
+
+  shouldShow(data) {
+    return data.nbtLogger;
+  }
+});
+
 mainConfig.addSwitch({
   configName: "actFix",
   title: "ACT Compatibility Fix",
@@ -484,6 +497,14 @@ mainConfig.addSwitch({
   shouldShow(data) {
     return data.nbtLogger;
   }
+});
+
+mainConfig.addSwitch({
+  configName: "botHider",
+  title: "Bot Join Hider",
+  description: "Tries to detect bot join waves, and hides their join/leave messages. Does not work too well...",
+  category: "Miscellaneous",
+  value: false
 });
 
 

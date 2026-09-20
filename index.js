@@ -13,6 +13,7 @@ import "./modules/partyAuto";
 import "./commands/hidePlayer";
 import "./modules/autoCollect";
 import "./modules/nbtLogger";
+import "./modules/botHider";
 
 import "./autoUpdate";
 
