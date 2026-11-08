@@ -14,6 +14,7 @@ import "./commands/hidePlayer";
 import "./modules/autoCollect";
 import "./modules/nbtLogger";
 import "./modules/botHider";
+import "./commands/plrFinder";
 
 import "./autoUpdate";
 

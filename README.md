@@ -56,6 +56,8 @@ This module is still in development, so please report any bugs in the issues sec
   - ACT Compatibility Fix
 - Bot Join Hider
   - WIP and very bad
+- Player Finder (/hloc, /hlocate, /hlocateplayer)
+  - Draw a tracer to player
 - Coming soon...
 
 ## How to Configure and Use
